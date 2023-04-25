@@ -1,0 +1,15 @@
+canvas {
+  background: #eee;
+  display: block;
+  margin: auto;
+  border: 2px solid black;
+}
+
+body {
+  text-align: center;
+  user-select: none;
+}
+
+#myCanvas {
+  z-index: 2;
+}
