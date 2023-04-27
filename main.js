@@ -1,6 +1,8 @@
 const canvas = document.getElementById("myCanvas");
 const ctx = canvas.getContext("2d");
 
+ctx.globalCompositeOperation = "source-over";
+
 let squarewidth = canvas.width / 8;
 let squareheight = canvas.height / 8;
 let lastSelection;
@@ -89,23 +91,37 @@ function drawPieces() {
   }
 }
 function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawBoard();
   drawPieces();
   requestAnimationFrame(draw);
 }
-drawBoard();
 draw();
 
 function getCursorPosition(c, event) {
   const rect = c.getBoundingClientRect();
   const x = event.clientX - rect.left;
   const y = event.clientY - rect.top;
+  let clickfound = false;
   let piecex = Math.floor(x / 80);
   let piecey = Math.floor(y / 80);
-  pieces[lastSelection].selected = false;
   for (i = 0; i < pieces.length; i++) {
-    if (pieces[i].column == piecex && pieces[i].row == piecey) {
-      pieces[i].selected = true;
-      lastSelection = i;
+    if (pieces[i].selected == true) {
+      pieces[i].column = piecex;
+      pieces[i].row = 7 - piecey;
+      clickfound = true;
+      pieces[i].selected = false;
+    }
+  }
+  if (lastSelection != undefined) {
+    pieces[lastSelection].selected = false;
+  }
+  if (clickfound == false) {
+    for (i = 0; i < pieces.length; i++) {
+      if (pieces[i].column == piecex && pieces[i].row == 7 - piecey) {
+        pieces[i].selected = true;
+        lastSelection = i;
+      }
     }
   }
   console.log("x: " + piecex + " y: " + piecey);
