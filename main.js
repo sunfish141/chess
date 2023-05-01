@@ -1,11 +1,37 @@
 const canvas = document.getElementById("myCanvas");
 const ctx = canvas.getContext("2d");
 
-ctx.globalCompositeOperation = "source-over";
-
 let squarewidth = canvas.width / 8;
 let squareheight = canvas.height / 8;
 let lastSelection;
+
+
+const imageUrls = [
+  "img\\whitepawn.png",
+  "img\\whiteknight.png",
+  "img\\whitebishop.png",
+  "img\\whiterook.png",
+  "img\\whitequeen.png",
+  "img\\whiteking.png",
+  "img\\blackpawn.png",
+  "img\\blackknight.png",
+  "img\\blackbishop.png",
+  "img\\blackrook.png",
+  "img\\blackqueen.png",
+  "img\\blackking.png"
+];
+
+const images = [];
+
+// Load each image and add it to the images array
+imageUrls.forEach((url) => {
+  const img = new Image();
+  img.src = url;
+  img.onload = () => {
+    images.push(img);
+  };
+});
+
 
 let pieces = [
   { piece: "pawn", color: "white", column: 0, row: 1, selected: false },
@@ -84,10 +110,8 @@ function drawPieces() {
       x -= 10;
     }
     const image = new Image();
-    image.onload = function () {
-      ctx.drawImage(image, x, y, width, length);
-    };
     image.src = `img\\${e}.png`;
+    ctx.drawImage(image, x, y, width, length);
   }
 }
 function draw() {
