@@ -4,7 +4,7 @@ const ctx = canvas.getContext("2d");
 let squarewidth = canvas.width / 8;
 let squareheight = canvas.height / 8;
 let lastSelection;
-
+let currentturn = "white";
 
 const imageUrls = [
   "img\\whitepawn.png",
@@ -18,7 +18,7 @@ const imageUrls = [
   "img\\blackbishop.png",
   "img\\blackrook.png",
   "img\\blackqueen.png",
-  "img\\blackking.png"
+  "img\\blackking.png",
 ];
 
 const images = [];
@@ -32,16 +32,71 @@ imageUrls.forEach((url) => {
   };
 });
 
-
 let pieces = [
-  { piece: "pawn", color: "white", column: 0, row: 1, selected: false },
-  { piece: "pawn", color: "white", column: 1, row: 1, selected: false },
-  { piece: "pawn", color: "white", column: 2, row: 1, selected: false },
-  { piece: "pawn", color: "white", column: 3, row: 1, selected: false },
-  { piece: "pawn", color: "white", column: 4, row: 1, selected: false },
-  { piece: "pawn", color: "white", column: 5, row: 1, selected: false },
-  { piece: "pawn", color: "white", column: 6, row: 1, selected: false },
-  { piece: "pawn", color: "white", column: 7, row: 1, selected: false },
+  {
+    piece: "pawn",
+    color: "white",
+    column: 0,
+    row: 1,
+    selected: false,
+    moved: false,
+  },
+  {
+    piece: "pawn",
+    color: "white",
+    column: 1,
+    row: 1,
+    selected: false,
+    moved: false,
+  },
+  {
+    piece: "pawn",
+    color: "white",
+    column: 2,
+    row: 1,
+    selected: false,
+    moved: false,
+  },
+  {
+    piece: "pawn",
+    color: "white",
+    column: 3,
+    row: 1,
+    selected: false,
+    moved: false,
+  },
+  {
+    piece: "pawn",
+    color: "white",
+    column: 4,
+    row: 1,
+    selected: false,
+    moved: false,
+  },
+  {
+    piece: "pawn",
+    color: "white",
+    column: 5,
+    row: 1,
+    selected: false,
+    moved: false,
+  },
+  {
+    piece: "pawn",
+    color: "white",
+    column: 6,
+    row: 1,
+    selected: false,
+    moved: false,
+  },
+  {
+    piece: "pawn",
+    color: "white",
+    column: 7,
+    row: 1,
+    selected: false,
+    moved: false,
+  },
   { piece: "rook", color: "white", column: 0, row: 0, selected: false },
   { piece: "rook", color: "white", column: 7, row: 0, selected: false },
   { piece: "knight", color: "white", column: 1, row: 0, selected: false },
@@ -51,14 +106,70 @@ let pieces = [
   { piece: "queen", color: "white", column: 3, row: 0, selected: false },
   { piece: "king", color: "white", column: 4, row: 0, selected: false },
   //black pieces
-  { piece: "pawn", color: "black", column: 0, row: 6, selected: false },
-  { piece: "pawn", color: "black", column: 1, row: 6, selected: false },
-  { piece: "pawn", color: "black", column: 2, row: 6, selected: false },
-  { piece: "pawn", color: "black", column: 3, row: 6, selected: false },
-  { piece: "pawn", color: "black", column: 4, row: 6, selected: false },
-  { piece: "pawn", color: "black", column: 5, row: 6, selected: false },
-  { piece: "pawn", color: "black", column: 6, row: 6, selected: false },
-  { piece: "pawn", color: "black", column: 7, row: 6, selected: false },
+  {
+    piece: "pawn",
+    color: "black",
+    column: 0,
+    row: 6,
+    selected: false,
+    moved: false,
+  },
+  {
+    piece: "pawn",
+    color: "black",
+    column: 1,
+    row: 6,
+    selected: false,
+    moved: false,
+  },
+  {
+    piece: "pawn",
+    color: "black",
+    column: 2,
+    row: 6,
+    selected: false,
+    moved: false,
+  },
+  {
+    piece: "pawn",
+    color: "black",
+    column: 3,
+    row: 6,
+    selected: false,
+    moved: false,
+  },
+  {
+    piece: "pawn",
+    color: "black",
+    column: 4,
+    row: 6,
+    selected: false,
+    moved: false,
+  },
+  {
+    piece: "pawn",
+    color: "black",
+    column: 5,
+    row: 6,
+    selected: false,
+    moved: false,
+  },
+  {
+    piece: "pawn",
+    color: "black",
+    column: 6,
+    row: 6,
+    selected: false,
+    moved: false,
+  },
+  {
+    piece: "pawn",
+    color: "black",
+    column: 7,
+    row: 6,
+    selected: false,
+    moved: false,
+  },
   { piece: "rook", color: "black", column: 0, row: 7, selected: false },
   { piece: "rook", color: "black", column: 7, row: 7, selected: false },
   { piece: "knight", color: "black", column: 1, row: 7, selected: false },
@@ -122,6 +233,53 @@ function draw() {
 }
 draw();
 
+function possibleMoves(piece) {
+  let possible = [];
+  if (piece.piece == "pawn") {
+    // POSSIBLE MOVES
+    possible = [
+      { row: piece.row + 1, column: piece.column },
+      { row: piece.row + 2, column: piece.column },
+      { row: piece.row + 1, column: piece.column - 1 },
+      { row: piece.row + 1, column: piece.column + 1 },
+    ];
+    for (i = 0; i < pieces.length; i++) {
+      //MOVE ONE SQUARE
+      if (pieces[i].column == piece.column && pieces[i].row == piece.row + 1) {
+        for (q = 0; q < possible.length; q++) {
+          if (
+            (possible[i].column =
+              piece.column && possible[i].row == piece.row + 1)
+          ) {
+            possible.splice(q, 1);
+          } else if (
+            (possible[i].column =
+              piece.column && possible[i].row == piece.row + 2)
+          ) {
+            possible.splice(q, 1);
+          }
+        } //MOVE TWO SQUARES
+      } else if (
+        (pieces[i].column == piece.column && pieces[i].row == piece.row + 2) ||
+        piece.moved == false
+      ) {
+        for (q = 0; q < possible.length; q++) {
+          if (
+            (possible[i].column =
+              piece.column && possible[i].row == piece.row + 2)
+          ) {
+            possible.splice(q, 1);
+          }
+        }
+      } else if (
+        pieces[i].column == piece.column - 1 &&
+        pieces[i].row == piece.row + 1
+      ) {
+      }
+    }
+  }
+}
+
 function getCursorPosition(c, event) {
   const rect = c.getBoundingClientRect();
   const x = event.clientX - rect.left;
@@ -131,8 +289,17 @@ function getCursorPosition(c, event) {
   let piecey = Math.floor(y / 80);
   for (i = 0; i < pieces.length; i++) {
     if (pieces[i].selected == true) {
-      pieces[i].column = piecex;
-      pieces[i].row = 7 - piecey;
+      if (pieces[i].color == currentturn) {
+        let moves = possibleMoves(pieces[i]);
+        pieces[i].column = piecex;
+        pieces[i].row = 7 - piecey;
+        if (currentturn == "white") {
+          currentturn = "black";
+          console.log("switch");
+        } else {
+          currentturn = "white";
+        }
+      }
       clickfound = true;
       pieces[i].selected = false;
     }
