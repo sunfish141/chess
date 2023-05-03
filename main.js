@@ -242,19 +242,18 @@ function possibleMoves(piece) {
       { row: piece.row + 2, column: piece.column },
       //MAKE IT SO THE FOLLOWING MOVES ARE ONLY POSSIBLE IF ENEMY PIECES ARE DETECTED
     ];
-    console.log(possible);
     for (i = 0; i < pieces.length; i++) {
       //MOVE ONE SQUARE
       if (pieces[i].column == piece.column && pieces[i].row == piece.row + 1) {
         for (q = 0; q < possible.length; q++) {
           if (
-            possible[i].column == piece.column &&
-            possible[i].row == piece.row + 1
+            possible[q].column == piece.column &&
+            possible[q].row == piece.row + 1
           ) {
             possible.splice(q, 1);
           } else if (
-            possible[i].column == piece.column &&
-            possible[i].row == piece.row + 2
+            possible[q].column == piece.column &&
+            possible[q].row == piece.row + 2
           ) {
             possible.splice(q, 1);
           }
@@ -265,29 +264,85 @@ function possibleMoves(piece) {
       ) {
         for (q = 0; q < possible.length; q++) {
           if (
-            possible[i].column == piece.column &&
-            possible[i].row == piece.row + 2
+            possible[q].column == piece.column &&
+            possible[q].row == piece.row + 2
           ) {
             possible.splice(q, 1);
           }
         }
-      } else if (
+      }
+      if (
         pieces[i].column == piece.column - 1 &&
         pieces[i].row == piece.row + 1
       ) {
+        console.log("EEEEE");
         if (pieces[i].color != piece.color) {
-          possible.push({ row: piece.row + 1, column: piece.column });
+          possible.push({ row: piece.row + 1, column: piece.column - 1 });
         }
       } else if (
         pieces[i].column == piece.column + 1 &&
         pieces[i].row == piece.row + 1
       ) {
+        console.log("EEEEE");
         if (pieces[i].color != piece.color) {
           possible.push({ row: piece.row + 1, column: piece.column });
         }
       }
     }
+  } else if (piece.piece == "pawn" && piece.color == "black") {
+    // POSSIBLE MOVES
+    possible = [
+      { row: piece.row - 1, column: piece.column },
+      { row: piece.row - 2, column: piece.column },
+      //MAKE IT SO THE FOLLOWING MOVES ARE ONLY POSSIBLE IF ENEMY PIECES ARE DETECTED
+    ];
+    for (i = 0; i < pieces.length; i++) {
+      //MOVE ONE SQUARE
+      if (pieces[i].column == piece.column && pieces[i].row == piece.row - 1) {
+        for (q = 0; q < possible.length; q++) {
+          if (
+            possible[q].column == piece.column &&
+            possible[q].row == piece.row - 1
+          ) {
+            possible.splice(q, 1);
+          } else if (
+            possible[q].column == piece.column &&
+            possible[q].row == piece.row - 2
+          ) {
+            possible.splice(q, 1);
+          }
+        } //MOVE TWO SQUARES
+      } else if (
+        (pieces[i].column == piece.column && pieces[i].row == piece.row - 2) ||
+        piece.moved == true
+      ) {
+        for (q = 0; q < possible.length; q++) {
+          if (
+            possible[q].column == piece.column &&
+            possible[q].row == piece.row - 2
+          ) {
+            possible.splice(q, 1);
+          }
+        }
+      }
+      if (
+        pieces[i].column == piece.column - 1 &&
+        pieces[i].row == piece.row - 1
+      ) {
+        if (pieces[i].color != piece.color) {
+          possible.push({ row: piece.row - 1, column: piece.column });
+        }
+      } else if (
+        pieces[i].column == piece.column + 1 &&
+        pieces[i].row == piece.row - 1
+      ) {
+        if (pieces[i].color != piece.color) {
+          possible.push({ row: piece.row - 1, column: piece.column });
+        }
+      }
+    }
   }
+  console.log(possible);
   return possible;
 }
 
@@ -310,10 +365,17 @@ function getCursorPosition(c, event) {
             (moves.map((a) => a.row).includes(7 - piecey) &&
               moves.map((a) => a.column).includes(piecex)) == true
           ) {
-            console.log("e");
+            for (z = 0; z < pieces.length; z++) {
+              if (pieces[z].column == piecex && pieces[z].row == 7 - piecey) {
+                pieces.splice(z, 1);
+              }
+            }
             pieces[k].column = piecex;
             pieces[k].row = 7 - piecey;
             movefound = true;
+            if (pieces[k].piece == "pawn") {
+              pieces[k].moved = true;
+            }
           }
         if (currentturn == "white" && movefound == true) {
           currentturn = "black";
@@ -322,8 +384,6 @@ function getCursorPosition(c, event) {
           currentturn = "white";
         }
       }
-      console.log(pieces);
-      console.log(k);
       clickfound = true;
       pieces[k].selected = false;
     }
