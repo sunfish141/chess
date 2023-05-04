@@ -285,7 +285,7 @@ function possibleMoves(piece) {
       ) {
         console.log("EEEEE");
         if (pieces[i].color != piece.color) {
-          possible.push({ row: piece.row + 1, column: piece.column });
+          possible.push({ row: piece.row + 1, column: piece.column + 1 });
         }
       }
     }
@@ -330,14 +330,14 @@ function possibleMoves(piece) {
         pieces[i].row == piece.row - 1
       ) {
         if (pieces[i].color != piece.color) {
-          possible.push({ row: piece.row - 1, column: piece.column });
+          possible.push({ row: piece.row - 1, column: piece.column - 1 });
         }
       } else if (
         pieces[i].column == piece.column + 1 &&
         pieces[i].row == piece.row - 1
       ) {
         if (pieces[i].color != piece.color) {
-          possible.push({ row: piece.row - 1, column: piece.column });
+          possible.push({ row: piece.row - 1, column: piece.column + 1 });
         }
       }
     }
@@ -359,15 +359,14 @@ function getCursorPosition(c, event) {
       if (pieces[k].color == currentturn) {
         let moves = possibleMoves(pieces[k]);
         console.log(moves);
-        //column == piecex && moves.row == 7 - piecey
-        for (w = 0; w < moves.length; w++)
           if (
             (moves.map((a) => a.row).includes(7 - piecey) &&
               moves.map((a) => a.column).includes(piecex)) == true
           ) {
             for (z = 0; z < pieces.length; z++) {
-              if (pieces[z].column == piecex && pieces[z].row == 7 - piecey) {
+              if (pieces[z].column == piecex && pieces[z].row == 7 - piecey && pieces[z].color != pieces[k].color) {
                 pieces.splice(z, 1);
+                console.log(pieces);
               }
             }
             pieces[k].column = piecex;
