@@ -358,6 +358,7 @@ function getCursorPosition(c, event) {
     if (pieces[k].selected == true) {
       if (pieces[k].color == currentturn) {
         let moves = possibleMoves(pieces[k]);
+        console.log(k)
         console.log(moves);
           if (
             (moves.map((a) => a.row).includes(7 - piecey) &&
@@ -369,12 +370,21 @@ function getCursorPosition(c, event) {
                 console.log(pieces);
               }
             }
-            pieces[k].column = piecex;
-            pieces[k].row = 7 - piecey;
-            movefound = true;
-            if (pieces[k].piece == "pawn") {
-              pieces[k].moved = true;
+            console.log(pieces)
+            for(j = 0; j < pieces.length; j++)
+            {
+              if (pieces[j].selected == true)
+              {
+                pieces[j].column = piecex;
+                pieces[j].row = 7 - piecey;
+                pieces[j].selected = false;
+                if (pieces[j].piece == "pawn") {
+                  pieces[j].moved = true;
+                }
+              }
             }
+            console.log(k)
+            movefound = true;
           }
         if (currentturn == "white" && movefound == true) {
           currentturn = "black";
