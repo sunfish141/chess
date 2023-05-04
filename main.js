@@ -288,7 +288,7 @@ function possibleMoves(piece) {
           possible.push({ row: piece.row + 1, column: piece.column + 1 });
         }
       }
-    }
+    } //BLACK PAWN
   } else if (piece.piece == "pawn" && piece.color == "black") {
     // POSSIBLE MOVES
     possible = [
@@ -341,6 +341,46 @@ function possibleMoves(piece) {
         }
       }
     }
+  } else if (piece.piece == "queen") {
+    console.log("eeeee");
+    possible = [];
+    let hit = false;
+    let addcounter = 1;
+    while (hit == false) {
+      for (j = 0; j < pieces.length; j++) {
+        if (
+          (pieces[j].column == piece.column &&
+            pieces[j].row == piece.row + addcounter) ||
+          piece.row - addcounter > 7
+        ) {
+          console.log("qweqwe");
+          hit = true;
+        }
+      }
+      if (hit == true || addcounter > 7) {
+        break;
+      }
+      possible.push({ row: piece.row + addcounter, column: piece.column });
+      addcounter++;
+    }
+    hit = false;
+    addcounter = 1;
+    while (hit == false) {
+      for (j = 0; j < pieces.length; j++) {
+        if (
+          piece.row - addcounter < 0 ||
+          (pieces[j].column == piece.column &&
+            pieces[j].row == piece.row - addcounter)
+        ) {
+          hit = true;
+        }
+      }
+      if (hit == true || addcounter < 0) {
+        break;
+      }
+      possible.push({ row: piece.row - addcounter, column: piece.column });
+      addcounter++;
+    }
   }
   console.log(possible);
   return possible;
@@ -358,34 +398,36 @@ function getCursorPosition(c, event) {
     if (pieces[k].selected == true) {
       if (pieces[k].color == currentturn) {
         let moves = possibleMoves(pieces[k]);
-        console.log(k)
+        console.log(pieces);
+        console.log(k);
         console.log(moves);
-          if (
-            (moves.map((a) => a.row).includes(7 - piecey) &&
-              moves.map((a) => a.column).includes(piecex)) == true
-          ) {
-            for (z = 0; z < pieces.length; z++) {
-              if (pieces[z].column == piecex && pieces[z].row == 7 - piecey && pieces[z].color != pieces[k].color) {
-                pieces.splice(z, 1);
-                console.log(pieces);
-              }
+        if (
+          (moves.map((a) => a.row).includes(7 - piecey) &&
+            moves.map((a) => a.column).includes(piecex)) == true
+        ) {
+          for (z = 0; z < pieces.length; z++) {
+            if (
+              pieces[z].column == piecex &&
+              pieces[z].row == 7 - piecey &&
+              pieces[z].color != pieces[k].color
+            ) {
+              pieces.splice(z, 1);
             }
-            console.log(pieces)
-            for(j = 0; j < pieces.length; j++)
-            {
-              if (pieces[j].selected == true)
-              {
-                pieces[j].column = piecex;
-                pieces[j].row = 7 - piecey;
-                pieces[j].selected = false;
-                if (pieces[j].piece == "pawn") {
-                  pieces[j].moved = true;
-                }
-              }
-            }
-            console.log(k)
-            movefound = true;
           }
+          console.log(pieces);
+          for (j = 0; j < pieces.length; j++) {
+            if (pieces[j].selected == true) {
+              pieces[j].column = piecex;
+              pieces[j].row = 7 - piecey;
+              pieces[j].selected = false;
+              if (pieces[j].piece == "pawn") {
+                pieces[j].moved = true;
+              }
+            }
+          }
+          console.log(k);
+          movefound = true;
+        }
         if (currentturn == "white" && movefound == true) {
           currentturn = "black";
           console.log("switch");
