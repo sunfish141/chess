@@ -346,6 +346,7 @@ function possibleMoves(piece) {
     possible = [];
     let hit = false;
     let addcounter = 1;
+    //ALL OF THE CODE BELOW IS THE IDENTICAL PROGRAMMING FOR A ROOK{
     while (hit == false) {
       for (j = 0; j < pieces.length; j++) {
         if (
@@ -353,6 +354,9 @@ function possibleMoves(piece) {
             pieces[j].row == piece.row + addcounter) ||
           piece.row - addcounter > 7
         ) {
+          if (pieces[j].color != piece.color){
+            possible.push({ row: piece.row + addcounter, column: piece.column })
+          }
           console.log("qweqwe");
           hit = true;
         }
@@ -372,15 +376,63 @@ function possibleMoves(piece) {
           (pieces[j].column == piece.column &&
             pieces[j].row == piece.row - addcounter)
         ) {
+          if (pieces[j].color != piece.color){
+            possible.push({ row: piece.row - addcounter, column: piece.column })
+          }
           hit = true;
         }
       }
-      if (hit == true || addcounter < 0) {
+      if (hit == true || addcounter > 7) {
         break;
       }
       possible.push({ row: piece.row - addcounter, column: piece.column });
       addcounter++;
     }
+    hit = false;
+    addcounter = 1;
+    while (hit == false){
+      for (j = 0; j < pieces.length; j++){
+        if((pieces[j].row == piece.row && pieces[j].column == piece.column + addcounter) || piece.column + addcounter > 7){
+          hit = true;
+          if (pieces[j].color != piece.color){
+            possible.push({row: piece.row, column: piece.column + addcounter});
+          }
+        }
+      }
+      if (hit == true || addcounter > 7){
+        break;
+      }
+      possible.push({row:piece.row, column:piece.column + addcounter});
+      addcounter++;
+    }
+    hit = false;
+    addcounter = 1;
+    while (hit == false){
+      for (j = 0; j < pieces.length; j++){
+        if((pieces[j].row == piece.row && pieces[j].column == piece.column - addcounter) || piece.column - addcounter < 0){
+          hit = true;
+          if (pieces[j].color != piece.color){
+            possible.push({row:piece.row, column: piece.column - addcounter});
+          }
+        }
+      }
+      if (hit == true || addcounter > 7){
+        break;
+      }
+      possible.push({row:piece.row, column: piece.column - addcounter});
+      addcounter++;
+    }
+    //}
+    hit = false;
+    addcounter = 1;
+    //diagonally upwards to the right
+    //while (hit == false){
+      //for (j = 0; j < pieces.length; j++){
+        //if((pieces[j].row == piece.row + addcounter && pieces[j].column == piece.column + addcounter) || piece.column - addcounter > 7 || piece.row - addcounter > 7){
+
+        //}
+      //}
+    //}
   }
   console.log(possible);
   return possible;
