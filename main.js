@@ -354,8 +354,11 @@ function possibleMoves(piece) {
             pieces[j].row == piece.row + addcounter) ||
           piece.row - addcounter > 7
         ) {
-          if (pieces[j].color != piece.color){
-            possible.push({ row: piece.row + addcounter, column: piece.column })
+          if (pieces[j].color != piece.color) {
+            possible.push({
+              row: piece.row + addcounter,
+              column: piece.column,
+            });
           }
           console.log("qweqwe");
           hit = true;
@@ -376,8 +379,11 @@ function possibleMoves(piece) {
           (pieces[j].column == piece.column &&
             pieces[j].row == piece.row - addcounter)
         ) {
-          if (pieces[j].color != piece.color){
-            possible.push({ row: piece.row - addcounter, column: piece.column })
+          if (pieces[j].color != piece.color) {
+            possible.push({
+              row: piece.row - addcounter,
+              column: piece.column,
+            });
           }
           hit = true;
         }
@@ -390,130 +396,301 @@ function possibleMoves(piece) {
     }
     hit = false;
     addcounter = 1;
-    while (hit == false){
-      for (j = 0; j < pieces.length; j++){
-        if((pieces[j].row == piece.row && pieces[j].column == piece.column + addcounter) || piece.column + addcounter > 7){
+    while (hit == false) {
+      for (j = 0; j < pieces.length; j++) {
+        if (
+          (pieces[j].row == piece.row &&
+            pieces[j].column == piece.column + addcounter) ||
+          piece.column + addcounter > 7
+        ) {
           hit = true;
-          if (pieces[j].color != piece.color){
-            possible.push({row: piece.row, column: piece.column + addcounter});
+          if (pieces[j].color != piece.color) {
+            possible.push({
+              row: piece.row,
+              column: piece.column + addcounter,
+            });
           }
         }
       }
-      if (hit == true || addcounter > 7){
+      if (hit == true || addcounter > 7) {
         break;
       }
-      possible.push({row:piece.row, column:piece.column + addcounter});
+      possible.push({ row: piece.row, column: piece.column + addcounter });
       addcounter++;
     }
     hit = false;
     addcounter = 1;
-    while (hit == false){
-      for (j = 0; j < pieces.length; j++){
-        if((pieces[j].row == piece.row && pieces[j].column == piece.column - addcounter) || piece.column - addcounter < 0){
+    while (hit == false) {
+      for (j = 0; j < pieces.length; j++) {
+        if (
+          (pieces[j].row == piece.row &&
+            pieces[j].column == piece.column - addcounter) ||
+          piece.column - addcounter < 0
+        ) {
           hit = true;
-          if (pieces[j].color != piece.color){
-            possible.push({row:piece.row, column: piece.column - addcounter});
+          if (pieces[j].color != piece.color) {
+            possible.push({
+              row: piece.row,
+              column: piece.column - addcounter,
+            });
           }
         }
       }
-      if (hit == true || addcounter > 7){
+      if (hit == true || addcounter > 7) {
         break;
       }
-      possible.push({row:piece.row, column: piece.column - addcounter});
+      possible.push({ row: piece.row, column: piece.column - addcounter });
       addcounter++;
     }
     //}
     hit = false;
     addcounter = 1;
     //diagonally upwards to the right
-    while (hit == false){
-      for (j = 0; j < pieces.length; j++){
-        if((pieces[j].row == piece.row + addcounter && pieces[j].column == piece.column + addcounter) || piece.column - addcounter > 7 || piece.row - addcounter > 7){
+    while (hit == false) {
+      for (j = 0; j < pieces.length; j++) {
+        if (
+          (pieces[j].row == piece.row + addcounter &&
+            pieces[j].column == piece.column + addcounter) ||
+          piece.column - addcounter > 7 ||
+          piece.row - addcounter > 7
+        ) {
           hit = true;
-          if (pieces[j].color != piece.color){
-            possible.push({row: piece.row + addcounter, column: piece.column + addcounter});
+          if (pieces[j].color != piece.color) {
+            possible.push({
+              row: piece.row + addcounter,
+              column: piece.column + addcounter,
+            });
+          }
+        }
+      }
+      if (hit == true || addcounter > 7) {
+        break;
+      }
+      possible.push({
+        row: piece.row + addcounter,
+        column: piece.column + addcounter,
+      });
+      addcounter++;
+    }
+    hit = false;
+    addcounter = 1;
+    //downwards to the left
+    while (hit == false) {
+      for (j = 0; j < pieces.length; j++) {
+        if (
+          (pieces[j].row == piece.row - addcounter &&
+            pieces[j].column == piece.column - addcounter) ||
+          piece.column - addcounter < 0 ||
+          piece.row - addcounter < 0
+        ) {
+          hit = true;
+          if (pieces[j].color != piece.color) {
+            possible.push({
+              row: piece.row - addcounter,
+              column: piece.column - addcounter,
+            });
+          }
+        }
+      }
+      if (hit == true || addcounter > 7) {
+        break;
+      }
+      possible.push({
+        row: piece.row - addcounter,
+        column: piece.column - addcounter,
+      });
+      addcounter++;
+    }
+    hit = false;
+    addcounter = 1;
+    //upwards to the right
+    while (hit == false) {
+      for (j = 0; j < pieces.length; j++) {
+        if (
+          (pieces[j].row == piece.row + addcounter &&
+            pieces[j].column == piece.column - addcounter) ||
+          piece.column - addcounter < 0 ||
+          piece.row - addcounter > 7
+        ) {
+          hit = true;
+          if (pieces[j].color != piece.color) {
+            possible.push({
+              row: piece.row + addcounter,
+              column: piece.column - addcounter,
+            });
+          }
+        }
+      }
+      if (hit == true || addcounter > 7) {
+        break;
+      }
+      possible.push({
+        row: piece.row + addcounter,
+        column: piece.column - addcounter,
+      });
+      addcounter++;
+    }
+    hit = false;
+    addcounter = 1;
+    //downwards to the right
+    while (hit == false) {
+      for (j = 0; j < pieces.length; j++) {
+        if (
+          (pieces[j].row == piece.row - addcounter &&
+            pieces[j].column == piece.column + addcounter) ||
+          piece.row - addcounter < 0 ||
+          piece.column - addcounter > 7
+        ) {
+          hit = true;
+          if (pieces[j].color != piece.color) {
+            possible.push({
+              row: piece.row - addcounter,
+              column: piece.column + addcounter,
+            });
+          }
+        }
+      }
+      if (hit == true || addcounter > 7) {
+        break;
+      }
+      possible.push({
+        row: piece.row - addcounter,
+        column: piece.column + addcounter,
+      });
+      addcounter++;
+    }
+  } else if (piece.piece == "rook") {
+    possible = [];
+    let hit = false;
+    let addcounter = 1;
+    //ALL OF THE CODE BELOW IS THE IDENTICAL PROGRAMMING FOR A ROOK{
+    while (hit == false) {
+      for (j = 0; j < pieces.length; j++) {
+        if (
+          (pieces[j].column == piece.column &&
+            pieces[j].row == piece.row + addcounter) ||
+          piece.row + addcounter > 7
+        ) {
+          if (pieces[j].color != piece.color) {
+            possible.push({
+              row: piece.row + addcounter,
+              column: piece.column,
+            });
+          }
+          console.log("qweqwe");
+          hit = true;
+        }
+      }
+      if (hit == true || addcounter > 7) {
+        break;
+      }
+      possible.push({ row: piece.row + addcounter, column: piece.column });
+      addcounter++;
+    }
+    hit = false;
+    addcounter = 1;
+    while (hit == false) {
+      for (j = 0; j < pieces.length; j++) {
+        if (
+          piece.row - addcounter < 0 ||
+          (pieces[j].column == piece.column &&
+            pieces[j].row == piece.row - addcounter)
+        ) {
+          if (pieces[j].color != piece.color) {
+            possible.push({
+              row: piece.row - addcounter,
+              column: piece.column,
+            });
+          }
+          hit = true;
+        }
+      }
+      if (hit == true || addcounter > 7) {
+        console.log("eeee");
+        break;
+      }
+      possible.push({ row: piece.row - addcounter, column: piece.column });
+      addcounter++;
+    }
+    hit = false;
+    addcounter = 1;
+    while (hit == false) {
+      for (j = 0; j < pieces.length; j++) {
+        if (
+          (pieces[j].row == piece.row &&
+            pieces[j].column == piece.column + addcounter) ||
+          piece.column + addcounter > 7
+        ) {
+          hit = true;
+          if (pieces[j].color != piece.color) {
+            possible.push({
+              row: piece.row,
+              column: piece.column + addcounter,
+            });
+          }
+        }
+      }
+      if (hit == true || addcounter > 7) {
+        console.log("eeeeeeee");
+        break;
+      }
+      possible.push({ row: piece.row, column: piece.column + addcounter });
+      addcounter++;
+    }
+    hit = false;
+    addcounter = 1;
+    while (hit == false) {
+      for (j = 0; j < pieces.length; j++) {
+        if (
+          (pieces[j].row == piece.row &&
+            pieces[j].column == piece.column - addcounter) ||
+          piece.column - addcounter < 0
+        ) {
+          hit = true;
+          console.log("eeeeeeeeeeeee");
+          if (pieces[j].color != piece.color) {
+            possible.push({
+              row: piece.row,
+              column: piece.column - addcounter,
+            });
+          }
+        }
+      }
+      if (hit == true || addcounter > 7) {
+        break;
+      }
+      possible.push({ row: piece.row, column: piece.column - addcounter });
+      addcounter++;
+    }
+  }
+  //}
+  //clear unwanted values
+  let clear = false;
+  while (clear == false) {
+    for (q = 0; q < possible.length; q++) {
+      if (
+        possible[q].column < 0 ||
+        possible[q].column > 7 ||
+        possible[q].row < 0 ||
+        possible[q].row > 7
+      ) {
+        console.log(possible[q]);
+        possible.splice(q, 1);
+      } else {
+        clear = true;
+      }
+      for (j = 0; j < possible.length; j++) {
+        if (
+          possible[j].column < 0 ||
+          possible[j].column > 7 ||
+          possible[j].row < 0 ||
+          possible[j].row > 7
+        ) {
+          clear = false;
         }
       }
     }
-    if (hit == true || addcounter > 7){
-      break;
-    }
-    possible.push({row: piece.row + addcounter, column: piece.column + addcounter});
-    addcounter++;
   }
-  hit = false;
-  addcounter = 1;
-  //downwards to the left
-  while (hit == false){
-    for (j = 0; j < pieces.length; j++){
-      if((pieces[j].row == piece.row - addcounter && pieces[j].column == piece.column - addcounter) || piece.column - addcounter < 0 || piece.row - addcounter < 0){
-        hit = true;
-        if (pieces[j].color != piece.color){
-          possible.push({row: piece.row - addcounter, column: piece.column - addcounter});
-        }
-      }
-    }
-    if (hit == true || addcounter > 7){
-    break;
-    }
-  possible.push({row: piece.row - addcounter, column: piece.column - addcounter});
-  addcounter++;
-  }
-  hit = false;
-  addcounter = 1;
-  //upwards to the right
-  while (hit == false){
-    for (j = 0; j < pieces.length; j++){
-      if((pieces[j].row == piece.row + addcounter && pieces[j].column == piece.column - addcounter) || piece.column - addcounter < 0 || piece.row - addcounter > 7){
-        hit = true;
-        if (pieces[j].color != piece.color){
-          possible.push({row: piece.row + addcounter, column: piece.column - addcounter});
-        }
-      }
-    }
-    if (hit == true || addcounter > 7){
-    break;
-    }
-  possible.push({row: piece.row + addcounter, column: piece.column - addcounter});
-  addcounter++;
-  }
-  hit = false;
-  addcounter = 1;
-  //downwards to the right
-  while (hit == false){
-    for (j = 0; j < pieces.length; j++){
-      if((pieces[j].row == piece.row - addcounter && pieces[j].column == piece.column + addcounter) || piece.row - addcounter < 0 || piece.column - addcounter > 7){
-        hit = true;
-        if (pieces[j].color != piece.color){
-          possible.push({row: piece.row - addcounter, column: piece.column + addcounter});
-        }
-      }
-    }
-    if (hit == true || addcounter > 7){
-    break;
-    }
-  possible.push({row: piece.row - addcounter, column: piece.column + addcounter});
-  addcounter++;
-  }
-}
-//clear unwanted values
-let clear = false;
-while (clear == false){
-  for (q = 0; q < possible.length; q++){
-    if (possible[q].column < 0 || possible[q].column > 7 || possible[q].row < 0 || possible[q].row > 7){
-      console.log(possible[q])
-      possible.splice(q, 1);
-    }
-    else{
-      clear = true;
-    }
-    for (j = 0; j < possible.length; j++){
-      if (possible[j].column < 0 || possible[j].column > 7 || possible[j].row < 0 || possible[j].row > 7){
-        clear = false;
-      }
-    }
-  }
-}
   console.log(possible);
   return possible;
 }
