@@ -426,14 +426,94 @@ function possibleMoves(piece) {
     hit = false;
     addcounter = 1;
     //diagonally upwards to the right
-    //while (hit == false){
-      //for (j = 0; j < pieces.length; j++){
-        //if((pieces[j].row == piece.row + addcounter && pieces[j].column == piece.column + addcounter) || piece.column - addcounter > 7 || piece.row - addcounter > 7){
-
-        //}
-      //}
-    //}
+    while (hit == false){
+      for (j = 0; j < pieces.length; j++){
+        if((pieces[j].row == piece.row + addcounter && pieces[j].column == piece.column + addcounter) || piece.column - addcounter > 7 || piece.row - addcounter > 7){
+          hit = true;
+          if (pieces[j].color != piece.color){
+            possible.push({row: piece.row + addcounter, column: piece.column + addcounter});
+        }
+      }
+    }
+    if (hit == true || addcounter > 7){
+      break;
+    }
+    possible.push({row: piece.row + addcounter, column: piece.column + addcounter});
+    addcounter++;
   }
+  hit = false;
+  addcounter = 1;
+  //downwards to the left
+  while (hit == false){
+    for (j = 0; j < pieces.length; j++){
+      if((pieces[j].row == piece.row - addcounter && pieces[j].column == piece.column - addcounter) || piece.column - addcounter < 0 || piece.row - addcounter < 0){
+        hit = true;
+        if (pieces[j].color != piece.color){
+          possible.push({row: piece.row - addcounter, column: piece.column - addcounter});
+        }
+      }
+    }
+    if (hit == true || addcounter > 7){
+    break;
+    }
+  possible.push({row: piece.row - addcounter, column: piece.column - addcounter});
+  addcounter++;
+  }
+  hit = false;
+  addcounter = 1;
+  //upwards to the right
+  while (hit == false){
+    for (j = 0; j < pieces.length; j++){
+      if((pieces[j].row == piece.row + addcounter && pieces[j].column == piece.column - addcounter) || piece.column - addcounter < 0 || piece.row - addcounter > 7){
+        hit = true;
+        if (pieces[j].color != piece.color){
+          possible.push({row: piece.row + addcounter, column: piece.column - addcounter});
+        }
+      }
+    }
+    if (hit == true || addcounter > 7){
+    break;
+    }
+  possible.push({row: piece.row + addcounter, column: piece.column - addcounter});
+  addcounter++;
+  }
+  hit = false;
+  addcounter = 1;
+  //downwards to the right
+  while (hit == false){
+    for (j = 0; j < pieces.length; j++){
+      if((pieces[j].row == piece.row - addcounter && pieces[j].column == piece.column + addcounter) || piece.row - addcounter < 0 || piece.column - addcounter > 7){
+        hit = true;
+        if (pieces[j].color != piece.color){
+          possible.push({row: piece.row - addcounter, column: piece.column + addcounter});
+        }
+      }
+    }
+    if (hit == true || addcounter > 7){
+    break;
+    }
+  possible.push({row: piece.row - addcounter, column: piece.column + addcounter});
+  addcounter++;
+  }
+}
+//clear unwanted values
+let clear = false;
+while (clear == false){
+  for (q = 0; q < possible.length; q++){
+    if (possible[q].column < 0 || possible[q].column > 7 || possible[q].row < 0 || possible[q].row > 7){
+      console.log(possible[q])
+      possible.splice(q, 1);
+    }
+    else{
+      clear = true;
+    }
+    for (j = 0; j < possible.length; j++){
+      if (possible[j].column < 0 || possible[j].column > 7 || possible[j].row < 0 || possible[j].row > 7){
+        clear = false;
+      }
+    }
+  }
+}
   console.log(possible);
   return possible;
 }
