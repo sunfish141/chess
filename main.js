@@ -631,7 +631,6 @@ function possibleMoves(piece) {
         }
       }
       if (hit == true || addcounter > 7) {
-        console.log("eeeeeeee");
         break;
       }
       possible.push({ row: piece.row, column: piece.column + addcounter });
@@ -647,7 +646,6 @@ function possibleMoves(piece) {
           piece.column - addcounter < 0
         ) {
           hit = true;
-          console.log("eeeeeeeeeeeee");
           if (pieces[j].color != piece.color) {
             possible.push({
               row: piece.row,
@@ -664,6 +662,129 @@ function possibleMoves(piece) {
     }
   }
   //}
+  else if (piece.piece == "bishop"){
+    possible = [];
+    let hit = false;
+    let addcounter = 1;
+    while (hit == false) {
+      for (j = 0; j < pieces.length; j++) {
+        if (
+          (pieces[j].row == piece.row + addcounter &&
+            pieces[j].column == piece.column + addcounter) ||
+          piece.column - addcounter > 7 ||
+          piece.row - addcounter > 7
+        ) {
+          hit = true;
+          if (pieces[j].color != piece.color) {
+            possible.push({
+              row: piece.row + addcounter,
+              column: piece.column + addcounter,
+            });
+          }
+        }
+      }
+      if (hit == true || addcounter > 7) {
+        break;
+      }
+      possible.push({
+        row: piece.row + addcounter,
+        column: piece.column + addcounter,
+      });
+      addcounter++;
+    }
+    hit = false;
+    addcounter = 1;
+    //downwards to the left
+    while (hit == false) {
+      for (j = 0; j < pieces.length; j++) {
+        if (
+          (pieces[j].row == piece.row - addcounter &&
+            pieces[j].column == piece.column - addcounter) ||
+          piece.column - addcounter < 0 ||
+          piece.row - addcounter < 0
+        ) {
+          hit = true;
+          if (pieces[j].color != piece.color) {
+            possible.push({
+              row: piece.row - addcounter,
+              column: piece.column - addcounter,
+            });
+          }
+        }
+      }
+      if (hit == true || addcounter > 7) {
+        break;
+      }
+      possible.push({
+        row: piece.row - addcounter,
+        column: piece.column - addcounter,
+      });
+      addcounter++;
+    }
+    hit = false;
+    addcounter = 1;
+    //upwards to the right
+    while (hit == false) {
+      for (j = 0; j < pieces.length; j++) {
+        if (
+          (pieces[j].row == piece.row + addcounter &&
+            pieces[j].column == piece.column - addcounter) ||
+          piece.column - addcounter < 0 ||
+          piece.row - addcounter > 7
+        ) {
+          hit = true;
+          if (pieces[j].color != piece.color) {
+            possible.push({
+              row: piece.row + addcounter,
+              column: piece.column - addcounter,
+            });
+          }
+        }
+      }
+      if (hit == true || addcounter > 7) {
+        break;
+      }
+      possible.push({
+        row: piece.row + addcounter,
+        column: piece.column - addcounter,
+      });
+      addcounter++;
+    }
+    hit = false;
+    addcounter = 1;
+    //downwards to the right
+    while (hit == false) {
+      for (j = 0; j < pieces.length; j++) {
+        if (
+          (pieces[j].row == piece.row - addcounter &&
+            pieces[j].column == piece.column + addcounter) ||
+          piece.row - addcounter < 0 ||
+          piece.column - addcounter > 7
+        ) {
+          hit = true;
+          if (pieces[j].color != piece.color) {
+            possible.push({
+              row: piece.row - addcounter,
+              column: piece.column + addcounter,
+            });
+          }
+        }
+      }
+      if (hit == true || addcounter > 7) {
+        break;
+      }
+      possible.push({
+        row: piece.row - addcounter,
+        column: piece.column + addcounter,
+      });
+      addcounter++;
+    }
+  }
+  else if (piece.piece == "knight"){
+    possible = [{row: piece.row - 2, column: piece.column - 1}, {row: piece.row - 1, column: piece.column - 2}, {row: piece.row + 1, column: piece.column - 2}
+    , {row: piece.row + 2, column: piece.column - 1}, {row: piece.row + 2, column: piece.column + 1}, {row: piece.row + 1, column: piece.column + 2},
+    {row: piece.row - 1, column: piece.column + 2}, {row: piece.row - 2, column: piece.column + 1}];
+  }
   //clear unwanted values
   let clear = false;
   while (clear == false) {
