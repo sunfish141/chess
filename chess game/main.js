@@ -3,42 +3,185 @@ const ctx = canvas.getContext("2d");
 
 let squarewidth = canvas.width / 8;
 let squareheight = canvas.height / 8;
+let lastSelection;
+let currentturn = "White";
+let checked = [];
+let gameover = false;
+
+const imageUrls = [
+  "img\\whitepawn.png",
+  "img\\whiteknight.png",
+  "img\\whitebishop.png",
+  "img\\whiterook.png",
+  "img\\whitequeen.png",
+  "img\\whiteking.png",
+  "img\\blackpawn.png",
+  "img\\blackknight.png",
+  "img\\blackbishop.png",
+  "img\\blackrook.png",
+  "img\\blackqueen.png",
+  "img\\blackking.png",
+];
+
+const images = [];
+
+// Load each image and add it to the images array
+imageUrls.forEach((url) => {
+  const img = new Image();
+  img.src = url;
+  img.onload = () => {
+    images.push(img);
+  };
+});
 
 let pieces = [
-  { piece: "pawn", color: "white", column: "a", row: 2 },
-  { piece: "pawn", color: "white", column: "b", row: 2 },
-  { piece: "pawn", color: "white", column: "c", row: 2 },
-  { piece: "pawn", color: "white", column: "d", row: 2 },
-  { piece: "pawn", color: "white", column: "e", row: 2 },
-  { piece: "pawn", color: "white", column: "f", row: 2 },
-  { piece: "pawn", color: "white", column: "g", row: 2 },
-  { piece: "pawn", color: "white", column: "h", row: 2 },
-  { piece: "rook", color: "white", column: "a", row: 1 },
-  { piece: "rook", color: "white", column: "h", row: 1 },
-  { piece: "knight", color: "white", column: "b", row: 1 },
-  { piece: "knight", color: "white", column: "g", row: 1 },
-  { piece: "bishop", color: "white", column: "c", row: 1 },
-  { piece: "bishop", color: "white", column: "f", row: 1 },
-  { piece: "queen", color: "white", column: "d", row: 1 },
-  { piece: "king", color: "white", column: "e", row: 1 },
+  {
+    piece: "pawn",
+    color: "white",
+    column: 0,
+    row: 1,
+    selected: false,
+    moved: false,
+  },
+  {
+    piece: "pawn",
+    color: "white",
+    column: 1,
+    row: 1,
+    selected: false,
+    moved: false,
+  },
+  {
+    piece: "pawn",
+    color: "white",
+    column: 2,
+    row: 1,
+    selected: false,
+    moved: false,
+  },
+  {
+    piece: "pawn",
+    color: "white",
+    column: 3,
+    row: 1,
+    selected: false,
+    moved: false,
+  },
+  {
+    piece: "pawn",
+    color: "white",
+    column: 4,
+    row: 1,
+    selected: false,
+    moved: false,
+  },
+  {
+    piece: "pawn",
+    color: "white",
+    column: 5,
+    row: 1,
+    selected: false,
+    moved: false,
+  },
+  {
+    piece: "pawn",
+    color: "white",
+    column: 6,
+    row: 1,
+    selected: false,
+    moved: false,
+  },
+  {
+    piece: "pawn",
+    color: "white",
+    column: 7,
+    row: 1,
+    selected: false,
+    moved: false,
+  },
+  { piece: "rook", color: "white", column: 0, row: 0, selected: false },
+  { piece: "rook", color: "white", column: 7, row: 0, selected: false },
+  { piece: "knight", color: "white", column: 1, row: 0, selected: false },
+  { piece: "knight", color: "white", column: 6, row: 0, selected: false },
+  { piece: "bishop", color: "white", column: 2, row: 0, selected: false },
+  { piece: "bishop", color: "white", column: 5, row: 0, selected: false },
+  { piece: "queen", color: "white", column: 3, row: 0, selected: false },
+  { piece: "king", color: "white", column: 4, row: 0, selected: false },
   //black pieces
-  { piece: "pawn", color: "black", column: "a", row: 7 },
-  { piece: "pawn", color: "black", column: "b", row: 7 },
-  { piece: "pawn", color: "black", column: "c", row: 7 },
-  { piece: "pawn", color: "black", column: "d", row: 7 },
-  { piece: "pawn", color: "black", column: "e", row: 7 },
-  { piece: "pawn", color: "black", column: "f", row: 7 },
-  { piece: "pawn", color: "black", column: "g", row: 7 },
-  { piece: "pawn", color: "black", column: "h", row: 7 },
-  { piece: "rook", color: "black", column: "a", row: 8 },
-  { piece: "rook", color: "black", column: "h", row: 8 },
-  { piece: "knight", color: "black", column: "b", row: 8 },
-  { piece: "knight", color: "black", column: "g", row: 8 },
-  { piece: "bishop", color: "black", column: "c", row: 8 },
-  { piece: "bishop", color: "black", column: "f", row: 8 },
-  { piece: "queen", color: "black", column: "d", row: 8 },
-  { piece: "king", color: "black", column: "e", row: 8 },
+  {
+    piece: "pawn",
+    color: "black",
+    column: 0,
+    row: 6,
+    selected: false,
+    moved: false,
+  },
+  {
+    piece: "pawn",
+    color: "black",
+    column: 1,
+    row: 6,
+    selected: false,
+    moved: false,
+  },
+  {
+    piece: "pawn",
+    color: "black",
+    column: 2,
+    row: 6,
+    selected: false,
+    moved: false,
+  },
+  {
+    piece: "pawn",
+    color: "black",
+    column: 3,
+    row: 6,
+    selected: false,
+    moved: false,
+  },
+  {
+    piece: "pawn",
+    color: "black",
+    column: 4,
+    row: 6,
+    selected: false,
+    moved: false,
+  },
+  {
+    piece: "pawn",
+    color: "black",
+    column: 5,
+    row: 6,
+    selected: false,
+    moved: false,
+  },
+  {
+    piece: "pawn",
+    color: "black",
+    column: 6,
+    row: 6,
+    selected: false,
+    moved: false,
+  },
+  {
+    piece: "pawn",
+    color: "black",
+    column: 7,
+    row: 6,
+    selected: false,
+    moved: false,
+  },
+  { piece: "rook", color: "black", column: 0, row: 7, selected: false },
+  { piece: "rook", color: "black", column: 7, row: 7, selected: false },
+  { piece: "knight", color: "black", column: 1, row: 7, selected: false },
+  { piece: "knight", color: "black", column: 6, row: 7, selected: false },
+  { piece: "bishop", color: "black", column: 2, row: 7, selected: false },
+  { piece: "bishop", color: "black", column: 5, row: 7, selected: false },
+  { piece: "queen", color: "black", column: 3, row: 7, selected: false },
+  { piece: "king", color: "black", column: 4, row: 7, selected: false },
 ];
+
 function drawBoard() {
   for (i = 0; i < 8; i++) {
     for (j = 0; j < 8; j++) {
@@ -71,8 +214,8 @@ function drawBoard() {
 function drawPieces() {
   for (i = 0; i < pieces.length; i++) {
     let e = pieces[i].color + pieces[i].piece;
-    let x = 10 + (pieces[i].column.charCodeAt() - 97) * 80;
-    let y = 650 - pieces[i].row * 80;
+    let x = 10 + pieces[i].column * 80;
+    let y = 570 - pieces[i].row * 80;
     let width = 60;
     let length = 60;
     if (pieces[i].piece == "bishop") {
@@ -80,15 +223,24 @@ function drawPieces() {
       x -= 10;
     }
     const image = new Image();
-    image.onload = function () {
-      ctx.drawImage(image, x, y, width, length);
-    };
     image.src = `img\\${e}.png`;
+    ctx.drawImage(image, x, y, width, length);
   }
 }
+
 function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawBoard();
   drawPieces();
-  requestAnimationFrame(draw);
+  if (gameover == false) {
+    requestAnimationFrame(draw);
+  }
 }
-drawBoard();
 draw();
+
+const c = document.querySelector("canvas");
+c.addEventListener("mousedown", function (e) {
+  if (gameover == false) {
+    getCursorPosition(c, e);
+  }
+});
